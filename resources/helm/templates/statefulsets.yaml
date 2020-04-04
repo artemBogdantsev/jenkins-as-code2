@@ -1,0 +1,65 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "fullname" . }}
+  namespace: devops-tools
+  labels:
+      app: {{ template "fullname" . }}
+      chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+      release: "{{ .Release.Name }}"
+      heritage: "{{ .Release.Service }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}
+  serviceName: {{ template "fullname" . }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: {{ template "fullname" . }}
+        image: "{{ .Values.image.repository}}:{{ .Values.image.tag}}"
+        imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+        env:
+        - name: DEPLOY_TS
+          value: "{{ date "20060102150405" .Release.Time }}"
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - name: jenkins-pv
+          mountPath: /var/jenkins_home
+        - name: jenkins-ssh-keys
+          mountPath: /var/jenkins_home/jenkins-ssh-keys
+        - name: jenkins-basic-auth-credentials
+          mountPath: /var/jenkins_home/jenkins-basic-auth-credentials
+        - name: jenkins-tokens
+          mountPath: /var/jenkins_home/jenkins-tokens
+        - name: custom-css
+          mountPath: /var/jenkins_home/userContent/layout/dasense_norcom.css
+          subPath: dasense_norcom.css
+      volumes:
+      - name: jenkins-pv
+      {{- if .Values.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.persistence.claimName }}
+      {{- else }}
+        emptyDir: {}
+      {{- end }}
+      - name: jenkins-ssh-keys
+        secret:
+          secretName: jenkins-ssh-keys
+      - name: jenkins-basic-auth-credentials
+        secret:
+          secretName: jenkins-basic-auth-credentials
+      - name: jenkins-tokens
+        secret:
+          secretName: jenkins-tokens
+      - name: custom-css
+        configMap:
+          name: custom-css

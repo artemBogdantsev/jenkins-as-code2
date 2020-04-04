@@ -1,0 +1,12 @@
+---
+image:
+  pullPolicy: Never # as we don't use docker registry
+  repository: jenkins-as-code
+  tag: 2.164.3
+persistence:
+  claimName: jenkins-pvc
+  accessMode: ReadWriteOnce
+  enabled: true
+  size: 5Gi
+  storageClass: rook-ceph-block
+serviceType: ClusterIP

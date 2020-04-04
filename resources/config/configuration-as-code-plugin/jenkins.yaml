@@ -1,0 +1,133 @@
+---
+jenkins:
+  systemMessage: "Powered automagically by Groovy and Configuration-as-Code Plugin\n\n"
+  numExecutors: 5
+
+  crumbIssuer: 
+    standard:
+      excludeClientIPFromCrumb: false
+
+  remotingSecurity:
+    enabled: true
+
+  globalNodeProperties:
+    - envVars:
+        env:
+          - key: "DASENSE_DEBUG"
+            value: "True"
+
+  authorizationStrategy:
+    globalMatrix:
+      grantedPermissions:
+        - "Overall/Read:anonymous"
+        - "Job/Read:anonymous"
+        - "View/Read:anonymous"
+        - "Overall/Administer:jenkins"
+        - "Overall/Administer:AdminLDAP, Admin"
+        - "Overall/Administer:ladmin"
+
+  securityRealm:
+    ldap:
+      configurations:
+        - groupMembershipStrategy:
+            fromUserRecord:
+              attributeName: "memberOf"
+          inhibitInferRootDN: false
+          rootDN: "dc=test,dc=example,dc=org"
+          server: "ldap://ldapserver-dasense-openldap:389"
+          managerDN: "cn=admin,cn=config"
+          managerPasswordSecret: "superldappass"
+      cache:
+        size: 100
+        ttl: 10
+      userIdStrategy: CaseSensitive
+      groupIdStrategy: CaseSensitive
+
+security:
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: false
+  remotingCLI:
+    enabled: false
+  sSHD:
+    port: 6666
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          #######
+          # User Auth
+          #######
+          - usernamePassword:
+              scope: "GLOBAL"
+              id: "gitlab-ci-user"
+              description: "GitLab CI User Credentials"
+              username: "${jenkins-basic-auth-credentials/gitlab-ci-user}"
+              password: "${jenkins-basic-auth-credentials/gitlab-ci-password}"
+          ########
+          # Tokens
+          ########
+          - string:
+              scope: "GLOBAL"
+              id: "slack-token"
+              description: "Slack Access Token"
+              secret: "${jenkins-tokens/slack-token}"
+          - string:
+              scope: "GLOBAL"
+              id: "gitlab-ci-token"
+              description: "GitLab CI Token"
+              secret: "${jenkins-tokens/gitlab-ci-token}"
+          ########
+          # SSH Keys
+          ########
+          - basicSSHUserPrivateKey:
+              scope: "GLOBAL"
+              id: "deploy-key-shared-library"
+              username: "root"
+              passphrase: ""
+              description: "Deploy key for global shared library"
+              privateKeySource:
+                directEntry:
+                  privateKey: "${jenkins-ssh-keys/deploy-key-shared-library}"
+          - basicSSHUserPrivateKey:
+              scope: "GLOBAL"
+              id: "ssh-agent-access-key"
+              username: "ubuntu"
+              passphrase: ""
+              description: "SSH key to access agents"
+              privateKeySource:
+                directEntry:
+                  privateKey: "${jenkins-ssh-keys/ssh-agent-access-key}"
+
+unclassified:
+  location:
+    url: "http://192.168.99.100:30001/"
+    adminAddress: "abt@norcom.de"
+
+  globalLibraries:
+    libraries:
+      - name: "jenkins-as-code"
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                remote: "git@abra.dasense.de:devops/jenkins-as-code.git"
+                credentialsId: "deploy-key-shared-library"
+      - name: "ansible-installer"
+        retriever:
+          modernSCM:
+            scm:
+              git:
+                remote: "git@abra.dasense.de:devops/ansible-installer.git"
+                credentialsId: "gitlab-ci-user"
+
+  simple-theme-plugin:
+    elements:
+      - cssUrl:
+          url: "/userContent/layout/dasense_norcom.css"
+          #url: "https://afonsof.com/jenkins-material-theme/dist/material-teal.css"
+
+  slackNotifier:
+    teamDomain: "dasense"
+    baseUrl: "https://norcomgroup.slack.com/services/hooks/jaac/"
+    tokenCredentialId: "slack-token"
