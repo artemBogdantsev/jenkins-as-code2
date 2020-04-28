@@ -15,8 +15,10 @@ spec:
     app: {{ template "fullname" . }}
   ports:
     - protocol: TCP
+      name: http
       port: 80
       targetPort: 8080
     - port: 50000
+      name: jenkins-agent
       protocol: TCP
       targetPort: 50000
