@@ -24,24 +24,40 @@ jenkins:
         - "View/Read:anonymous"
         - "Overall/Administer:jenkins"
         - "Overall/Administer:AdminLDAP, Admin"
-        - "Overall/Administer:ladmin"
+#        - "Overall/Administer:ladmin"
 
-  securityRealm:
-    ldap:
-      configurations:
-        - groupMembershipStrategy:
-            fromUserRecord:
-              attributeName: "memberOf"
-          inhibitInferRootDN: false
-          rootDN: "dc=test,dc=example,dc=org"
-          server: "ldap://ldapserver-dasense-openldap:389"
-          managerDN: "cn=admin,cn=config"
-          managerPasswordSecret: "superldappass"
-      cache:
-        size: 100
-        ttl: 10
-      userIdStrategy: CaseSensitive
-      groupIdStrategy: CaseSensitive
+#  securityRealm:
+#    ldap:
+#      configurations:
+#        - groupMembershipStrategy:
+#            fromUserRecord:
+#              attributeName: "memberOf"
+#          inhibitInferRootDN: false
+#          rootDN: "dc=test,dc=example,dc=org"
+#          server: "ldap://ldapserver-dasense-openldap:389"
+#          managerDN: "cn=admin,cn=config"
+#          managerPasswordSecret: "superldappass"
+#      cache:
+#        size: 100
+#        ttl: 10
+#      userIdStrategy: CaseSensitive
+#      groupIdStrategy: CaseSensitive
+
+  clouds:
+    - kubernetes:
+        name: "kubernetes"
+        serverUrl: "https://172.19.90.5:6443"
+        serverCertificate: "serverCertificate"
+        skipTlsVerify: true
+        credentialsId: "k8s-token"
+        namespace: "devops-tools"
+        jenkinsUrl: "http://jenkins-jenkins-as-code:80/"
+        jenkinsTunnel: ""
+        containerCapStr: 42 # Max number of agent containers that Kubernetes is allowed to run from Jenkins
+        maxRequestsPerHostStr: 64
+        retentionTimeout: 5
+        connectTimeout: 10
+        readTimeout: 20
 
 security:
   globalJobDslSecurityConfiguration:
@@ -77,13 +93,18 @@ credentials:
               id: "gitlab-ci-token"
               description: "GitLab CI Token"
               secret: "${jenkins-tokens/gitlab-ci-token}"
+          - string:
+              scope: "GLOBAL"
+              id: "k8s-token"
+              description: "K8s Token"
+              secret: "${jenkins-tokens/k8s-token}"
           ########
           # SSH Keys
           ########
           - basicSSHUserPrivateKey:
               scope: "GLOBAL"
               id: "deploy-key-shared-library"
-              username: "root"
+              username: "jenkins"
               passphrase: ""
               description: "Deploy key for global shared library"
               privateKeySource:
@@ -101,7 +122,7 @@ credentials:
 
 unclassified:
   location:
-    url: "http://192.168.99.100:30001/"
+    url: "http://jenkins-jenkins-as-code.devops-tools/"
     adminAddress: "abt@norcom.de"
 
   globalLibraries:
@@ -111,14 +132,14 @@ unclassified:
           modernSCM:
             scm:
               git:
-                remote: "git@abra.dasense.de:devops/jenkins-as-code.git"
+                remote: "git@172.19.90.8:devops/jenkins-as-code.git"
                 credentialsId: "deploy-key-shared-library"
       - name: "ansible-installer"
         retriever:
           modernSCM:
             scm:
               git:
-                remote: "git@abra.dasense.de:devops/ansible-installer.git"
+                remote: "git@172.19.90.8:devops/ansible-installer.git"
                 credentialsId: "gitlab-ci-user"
 
   simple-theme-plugin:

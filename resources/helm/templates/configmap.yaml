@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: custom-css
+  namespace: devops-tools
 data:
   dasense_norcom.css: |-
 {{ .Files.Get "config-files/dasense_norcom.css" | indent 4 }}

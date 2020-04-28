@@ -43,6 +43,8 @@ spec:
         - name: custom-css
           mountPath: /var/jenkins_home/userContent/layout/dasense_norcom.css
           subPath: dasense_norcom.css
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecrets }}
       volumes:
       - name: jenkins-pv
       {{- if .Values.persistence.enabled }}

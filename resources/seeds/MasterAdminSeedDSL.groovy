@@ -27,7 +27,7 @@ pipelineJob("Admin/Configure") {
             scm {
                 git {
                     remote {
-                        url("git@abra.dasense.de:devops/jenkins-as-code.git")
+                        url("git@172.19.90.8:devops/jenkins-as-code.git")
                         credentials("deploy-key-shared-library")
                     }
 

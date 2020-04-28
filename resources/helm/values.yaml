@@ -1,8 +1,9 @@
 ---
 image:
-  pullPolicy: Never # as we don't use docker registry
-  repository: jenkins-as-code
+  pullPolicy: Always # set to Never if u don't use docker registr
+  repository: nexus-docker.local:32489/devops-tools/jenkins-as-code
   tag: 2.164.3
+  pullSecrets: docregsecret
 persistence:
   claimName: jenkins-pvc
   accessMode: ReadWriteOnce
