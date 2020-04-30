@@ -43,6 +43,9 @@ spec:
         - name: custom-css
           mountPath: /var/jenkins_home/userContent/layout/dasense_norcom.css
           subPath: dasense_norcom.css
+        - name: nexus-maven
+          mountPath: /var/jenkins_home/settings.xml
+          subPath: settings.xml
       imagePullSecrets:
         - name: {{ .Values.image.pullSecrets }}
       volumes:
@@ -65,3 +68,6 @@ spec:
       - name: custom-css
         configMap:
           name: custom-css
+      - name: nexus-maven
+        configMap:
+          name: nexus-maven

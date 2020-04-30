@@ -52,7 +52,7 @@ jenkins:
         credentialsId: "k8s-token"
         namespace: "devops-tools"
         jenkinsUrl: "http://jenkins-jenkins-as-code:80/"
-        jenkinsTunnel: ""
+        jenkinsTunnel: "jenkins-jenkins-as-code:50000"
         containerCapStr: 42 # Max number of agent containers that Kubernetes is allowed to run from Jenkins
         maxRequestsPerHostStr: 64
         retentionTimeout: 5
