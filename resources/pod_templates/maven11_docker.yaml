@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: Pod
+spec:
+  hostAliases:
+  - ip: "172.19.90.206"
+    hostnames:
+    - "dev.eagle.norcom.de"
+  - ip: "172.20.1.116"
+    hostnames:
+    - "dc1.norcom.de"
+  volumes:
+  - name: maven-m2
+    configMap:
+      name: nexus-maven
+  - name: docker
+    hostPath:
+      path: /var/run/docker.sock
+  containers:
+  - name: maven
+    image: maven:3.6.3-openjdk-11-slim
+    command:
+    - cat
+    tty: true
+    volumeMounts:
+    - name: maven-m2
+      mountPath: /root/.m2
+  - name: docker
+    image: docker
+    command:
+    - cat
+    tty: true
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: docker
+      mountPath: /var/run/docker.sock # We use the k8s host docker engine
