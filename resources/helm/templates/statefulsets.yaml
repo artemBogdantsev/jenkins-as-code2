@@ -21,6 +21,13 @@ spec:
         app: {{ template "fullname" . }}
     spec:
       terminationGracePeriodSeconds: 10
+      hostAliases:
+      - ip: 172.20.1.116
+        hostnames:
+          - dc1.norcom.de # LDAP
+      - ip: 172.19.90.206
+        hostnames:
+          - dev.eagle.norcom.de # MapR Cluster
       containers:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image.repository}}:{{ .Values.image.tag}}"

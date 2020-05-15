@@ -1,20 +1,6 @@
 <settings>
     <interactiveMode>false</interactiveMode>
     <localRepository>/home/jenkins/.m2/repository</localRepository>
-    <mirrors>
-        <mirror>
-            <id>eagle-mirror</id>
-            <name>Old Eagle Repository</name>
-            <url>http://172.19.1.55:8081</url>
-            <mirrorOf>eagle</mirrorOf>
-        </mirror>
-        <mirror>
-            <id>eagle-snapshots-mirror</id>
-            <name>Old Eagle SNAPSHOT Repository</name>
-            <url>http://172.19.1.55:8081</url>
-            <mirrorOf>eagle-snapshots</mirrorOf>
-        </mirror>
-    </mirrors>
     <servers>
         <server>
             <id>norcom.internal.repo</id>
@@ -53,6 +39,19 @@
                     </releases>
                     <snapshots>
                         <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>norcom.internal.repo.old</id>
+                    <name>Old NorCom Internal Repository</name>
+                    <url>http://172.19.1.55:8081/repository/eagle-releases/</url>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
                     </snapshots>
                 </repository>
                 <repository>

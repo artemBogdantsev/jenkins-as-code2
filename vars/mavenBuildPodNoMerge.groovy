@@ -5,6 +5,8 @@ def call(Map pipelineParams) {
     podTemplate(
         label: label,
         cloud: 'kubernetes',
+        yaml: libraryResource('pod_templates/maven11.yaml')
+/* another approach:
         containers: [
             containerTemplate(
                 name: 'maven',
@@ -15,13 +17,16 @@ def call(Map pipelineParams) {
         ],
         volumes: [
             configMapVolume(configMapName: 'nexus-maven', mountPath: '/root/.m2/')
-        ]) {
+        ]
+*/
+    ) {
         node(label){
             //container = the container label
 
             stage ('Debug') {
-                echo "Branch:${pipelineParams.branch}"
-                echo "scmURL:${pipelineParams.url}"
+                echo "Branch: ${pipelineParams.branch}"
+                echo "scmURL: ${pipelineParams.url}"
+                echo "tests: ${pipelineParams.tests.toString()}"
             }
             stage('Checkout git') {
                 git branch: pipelineParams.branch, credentialsId: 'deploy-key-shared-library', url: pipelineParams.url
@@ -34,8 +39,12 @@ def call(Map pipelineParams) {
             }
 
             stage('Unit Tests') {
-                container('maven'){
-                    sh 'mvn test'
+                if (pipelineParams.tests.toBoolean()) {
+                    container('maven'){
+                        sh 'mvn test -X'
+                    }
+                }else{
+                    echo "Skip Tests"
                 }
             }
 
@@ -43,6 +52,15 @@ def call(Map pipelineParams) {
                 container('maven') {
                     sh 'mvn deploy -DskipTests'
                 }
+            }
+
+            stage('Publish Test Coverage Report') {
+                step([$class: 'JacocoPublisher',
+                      execPattern: '**/build/jacoco/*.exec',
+                      classPattern: '**/build/classes',
+                      sourcePattern: 'src/main/java',
+                      exclusionPattern: 'src/test*'
+                ])
             }
         }
     }

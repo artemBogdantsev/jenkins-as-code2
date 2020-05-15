@@ -80,6 +80,12 @@ credentials:
               description: "GitLab CI User Credentials"
               username: "${jenkins-basic-auth-credentials/gitlab-ci-user}"
               password: "${jenkins-basic-auth-credentials/gitlab-ci-password}"
+          - usernamePassword:
+              scope: "GLOBAL"
+              id: "docker-registry-user"
+              description: "Internal Docker Registry User Credentials"
+              username: "${jenkins-basic-auth-credentials/registry-user}"
+              password: "${jenkins-basic-auth-credentials/registry-password}"
           ########
           # Tokens
           ########
