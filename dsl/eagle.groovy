@@ -31,11 +31,12 @@ def projects = [
     "n-mongodb-impl": [folder: "Eagle", level: 7, repo: "ndos/n-mongodb-impl.git", script: "mavenBuildPodNoMerge"],
     "e-likes": [folder: "Eagle", level: 8, repo: "EAGLE/e-likes.git", script: "mavenBuildPodNoMerge"],
     "e-ingest": [folder: "Eagle", level: 8, repo: "EAGLE/e-ingest.git", script: "mavenDockerBuildPodNoMerge"],
-    "e-backend": [folder: "Eagle", level: 9, repo: "EAGLE/e-backend.git", script: "mavenBuildPodNoMerge"],
+    "e-backend": [folder: "Eagle", level: 9, repo: "EAGLE/e-backend.git", script: "mavenDockerBuildPodNoMerge"],
     "e-ingest-tika": [folder: "Eagle", level: 9, repo: "EAGLE/e-ingest-tika.git", script: "mavenBuildPodNoMerge"],
     "n-mapreduce-jobs": [folder: "Eagle", level: 10, repo: "ndos/n-mapreduce-jobs.git", script: "mavenBuildPodNoMerge"],
-    "e-rabbitmq-hbase": [folder: "Eagle", level: 11, repo: "EAGLE/e-rabbitmq-hbase.git", script: "mavenBuildPodNoMerge"],
-    "e-ingest-scanner": [folder: "Eagle", level: 11, repo: "EAGLE/e-ingest-scanner.git", script: "mavenBuildPodNoMerge"],
+    "eagle-distribution": [folder: "Eagle", level: 10, repo: "EAGLE/eagle-distribution.git", script: "mavenBuildPodNoMerge"],
+    "e-rabbitmq-hbase": [folder: "Eagle", level: 11, repo: "EAGLE/e-rabbitmq-hbase.git", script: "mavenDockerBuildPodNoMerge"],
+    "e-ingest-scanner": [folder: "Eagle", level: 11, repo: "EAGLE/e-ingest-scanner.git", script: "mavenDockerBuildPodNoMerge"],
     "eagle-installation": [folder: "Eagle", level: 11, repo: "EAGLE/eagle-installation.git", script: "mavenBuildPodNoMerge"],
 ]
 

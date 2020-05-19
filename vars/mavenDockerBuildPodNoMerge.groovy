@@ -1,3 +1,5 @@
+#!groovy​
+
 def call(Map pipelineParams) {
 
     def label = "maven-pod-${UUID.randomUUID().toString()}"
@@ -67,6 +69,7 @@ def call(Map pipelineParams) {
                 container('docker') {
                     def pom = readMavenPom file: 'pom.xml'
                     def release_version = pom.version.split('-')
+                    def project_folder = "."
 
                     echo "Release: ${release_version}"
                     echo "Artifact: ${pom.artifactId}"
@@ -79,16 +82,24 @@ def call(Map pipelineParams) {
                     }*/
 
                     if (fileExists("./target/${pom.artifactId}.exec")) {
-                        artifact_jar = "${pom.artifactId}.exec"
+                        artifact_jar = "${pom.artifactId}-exec.jar"
+                    } else if (pom.artifactId == "e-backend"){
+                        project_folder="e-backend-microservice/"
+                        artifact_jar = "${pom.artifactId}-microservice-exec.jar"
                     } else {
                         artifact_jar = "${pom.artifactId}-${pom.version}.jar"
                     }
 
-                    withCredentials([usernamePassword(credentialsId: 'docker-registry-user', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh 'docker login -u $USERNAME -p $PASSWORD nexus-docker.local:32489'
-                        sh "docker build --build-arg JAR_FILE=${artifact_jar} -t ${pom.artifactId}:${pom.version} ."
-                        sh "docker tag ${pom.artifactId}:${pom.version} nexus-docker.local:32489/eagle/${pom.artifactId}:${pom.version}"
-                        sh "docker push nexus-docker.local:32489/eagle/${pom.artifactId}:${pom.version}"
+                    dir("${env.WORKSPACE}/${project_folder}") {
+                        sh "ls -la ./"
+                        sh "ls -la target/"
+
+                        withCredentials([usernamePassword(credentialsId: 'docker-registry-user', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            sh 'docker login -u $USERNAME -p $PASSWORD nexus-docker.local:32489'
+                            sh "docker build --build-arg JAR_FILE=${artifact_jar} -t ${pom.artifactId}:${pom.version} ."
+                            sh "docker tag ${pom.artifactId}:${pom.version} nexus-docker.local:32489/eagle/${pom.artifactId}:${pom.version}"
+                            sh "docker push nexus-docker.local:32489/eagle/${pom.artifactId}:${pom.version}"
+                        }
                     }
                 }
             }

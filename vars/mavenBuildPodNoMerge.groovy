@@ -1,3 +1,5 @@
+#!groovy​
+
 def call(Map pipelineParams) {
 
     def label = "maven-pod-${UUID.randomUUID().toString()}"
