@@ -5,8 +5,8 @@ metadata:
   name: custom-css
   namespace: devops-tools
 data:
-  dasense_norcom.css: |-
-{{ .Files.Get "config-files/dasense_norcom.css" | indent 4 }}
+  custom.css: |-
+{{ .Files.Get "config-files/custom.css" | indent 4 }}
 
 ---
 apiVersion: v1

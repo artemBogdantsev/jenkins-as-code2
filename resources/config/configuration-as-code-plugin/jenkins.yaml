@@ -13,7 +13,7 @@ jenkins:
   globalNodeProperties:
     - envVars:
         env:
-          - key: "DASENSE_DEBUG"
+          - key: "MY_DEBUG"
             value: "True"
 
   authorizationStrategy:
@@ -34,7 +34,7 @@ jenkins:
 #              attributeName: "memberOf"
 #          inhibitInferRootDN: false
 #          rootDN: "dc=test,dc=example,dc=org"
-#          server: "ldap://ldapserver-dasense-openldap:389"
+#          server: "ldap://...:389"
 #          managerDN: "cn=admin,cn=config"
 #          managerPasswordSecret: "superldappass"
 #      cache:
@@ -46,7 +46,7 @@ jenkins:
   clouds:
     - kubernetes:
         name: "kubernetes"
-        serverUrl: "https://172.19.90.5:6443"
+        serverUrl: "https://172.17.0.3:6443"
         serverCertificate: "serverCertificate"
         skipTlsVerify: true
         credentialsId: "k8s-token"
@@ -129,7 +129,7 @@ credentials:
 unclassified:
   location:
     url: "http://jenkins-jenkins-as-code.devops-tools/"
-    adminAddress: "abt@norcom.de"
+    adminAddress: "a@b.t"
 
   globalLibraries:
     libraries:
@@ -138,23 +138,23 @@ unclassified:
           modernSCM:
             scm:
               git:
-                remote: "git@172.19.90.8:devops/jenkins-as-code.git"
+                remote: "git@172.17.0.1:devops/jenkins-as-code.git"
                 credentialsId: "deploy-key-shared-library"
       - name: "ansible-installer"
         retriever:
           modernSCM:
             scm:
               git:
-                remote: "git@172.19.90.8:devops/ansible-installer.git"
+                remote: "git@172.17.0.1:devops/ansible-installer.git"
                 credentialsId: "gitlab-ci-user"
 
   simple-theme-plugin:
     elements:
       - cssUrl:
-          url: "/userContent/layout/dasense_norcom.css"
+          url: "/userContent/layout/custom.css"
           #url: "https://afonsof.com/jenkins-material-theme/dist/material-teal.css"
 
   slackNotifier:
-    teamDomain: "dasense"
-    baseUrl: "https://norcomgroup.slack.com/services/hooks/jaac/"
+    teamDomain: "A-team"
+    baseUrl: "https://???.slack.com/services/hooks/jaac/"
     tokenCredentialId: "slack-token"

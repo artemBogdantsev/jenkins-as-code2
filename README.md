@@ -10,7 +10,7 @@ Configuration includes: ~~agents on demand (with terraform)~~, slack, GitLab, Gi
 ## Running locally
 Before we start please clone the repo or create a fork and keep all needed secrets in there
 ```
-git clone git@abra.dasense.de:devops/jenkins-as-code.git
+git clone git@<REPO URL>:devops/jenkins-as-code.git
 cd jenkins-as-code
 ```
 

@@ -3,12 +3,12 @@ apiVersion: v1
 kind: Pod
 spec:
   hostAliases:
-  - ip: "172.19.90.206"
+  - ip: "..."
     hostnames:
-    - "dev.eagle.norcom.de"
-  - ip: "172.20.1.116"
+    - "mapr.local"
+  - ip: "..."
     hostnames:
-    - "dc1.norcom.de"
+    - "ldap.local"
   volumes:
   - name: maven-m2
     configMap:

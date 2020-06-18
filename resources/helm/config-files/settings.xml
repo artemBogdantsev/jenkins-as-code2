@@ -3,14 +3,14 @@
     <localRepository>/home/jenkins/.m2/repository</localRepository>
     <servers>
         <server>
-            <id>norcom.internal.repo</id>
+            <id>internal.repo</id>
             <username>admin</username>
             <password>admin123</password>
             <filePermissions>664</filePermissions>
             <directoryPermissions>775</directoryPermissions>
         </server>
         <server>
-            <id>norcom.internal.snapshot.repo</id>
+            <id>internal.snapshot.repo</id>
             <username>admin</username>
             <password>admin123</password>
             <filePermissions>664</filePermissions>
@@ -20,19 +20,19 @@
 
     <profiles>
         <profile>
-            <id>norcom</id>
+            <id>internal</id>
 
             <properties>
-                <altDeploymentRepository>norcom.internal.snapshot.repo::default::http://nexus-service:8081/repository/eagle-snapshots</altDeploymentRepository>
-                <altReleaseDeploymentRepository>norcom.internal.repo::default::http://nexus-service:8081/repository/eagle-releases</altReleaseDeploymentRepository>
+                <altDeploymentRepository>internal.snapshot.repo::default::http://nexus-service:8081/repository/Olezhik-snapshots</altDeploymentRepository>
+                <altReleaseDeploymentRepository>internal.repo::default::http://nexus-service:8081/repository/Olezhik-releases</altReleaseDeploymentRepository>
             </properties>
 
-            <!-- Configuration of the Norcom repository used from within the company -->
+            <!-- Configuration of the repository used from within the company -->
             <repositories>
                 <repository>
-                    <id>norcom.internal.repo</id>
-                    <name>NorCom Internal Repository</name>
-                    <url>http://nexus-service:8081/repository/eagle-releases/</url>
+                    <id>internal.repo</id>
+                    <name>Internal Repository</name>
+                    <url>http://nexus-service:8081/repository/Olezhik-releases/</url>
                     <releases>
                         <enabled>true</enabled>
                         <updatePolicy>always</updatePolicy>
@@ -42,9 +42,9 @@
                     </snapshots>
                 </repository>
                 <repository>
-                    <id>norcom.internal.repo.old</id>
-                    <name>Old NorCom Internal Repository</name>
-                    <url>http://172.19.1.55:8081/repository/eagle-releases/</url>
+                    <id>internal.repo.old</id>
+                    <name>Old Internal Repository</name>
+                    <url>http://localhost:8081/repository/Olezhik-releases/</url>
                     <releases>
                         <enabled>true</enabled>
                         <updatePolicy>never</updatePolicy>
@@ -55,9 +55,9 @@
                     </snapshots>
                 </repository>
                 <repository>
-                    <id>norcom.internal.snapshot.repo</id>
-                    <name>NorCom Internal Snapshot Repository</name>
-                    <url>http://nexus-service:8081/repository/eagle-snapshots</url>
+                    <id>internal.snapshot.repo</id>
+                    <name>Internal Snapshot Repository</name>
+                    <url>http://nexus-service:8081/repository/Olezhik-snapshots</url>
                     <snapshots>
                         <enabled>true</enabled>
                         <updatePolicy>always</updatePolicy>
@@ -70,7 +70,7 @@
         </profile>
     </profiles>
     <activeProfiles>
-        <activeProfile>norcom</activeProfile>
+        <activeProfile>internal</activeProfile>
     </activeProfiles>
 
 </settings>

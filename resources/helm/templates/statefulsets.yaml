@@ -22,12 +22,12 @@ spec:
     spec:
       terminationGracePeriodSeconds: 10
       hostAliases:
-      - ip: 172.20.1.116
+      - ip: 172.17.0.1
         hostnames:
-          - dc1.norcom.de # LDAP
-      - ip: 172.19.90.206
+          - ldap.local # LDAP
+      - ip: 172.17.0.2
         hostnames:
-          - dev.eagle.norcom.de # MapR Cluster
+          - mapr.local # MapR Cluster
       containers:
       - name: {{ template "fullname" . }}
         image: "{{ .Values.image.repository}}:{{ .Values.image.tag}}"
@@ -48,8 +48,8 @@ spec:
         - name: jenkins-tokens
           mountPath: /var/jenkins_home/jenkins-tokens
         - name: custom-css
-          mountPath: /var/jenkins_home/userContent/layout/dasense_norcom.css
-          subPath: dasense_norcom.css
+          mountPath: /var/jenkins_home/userContent/layout/custom.css
+          subPath: custom.css
         - name: nexus-maven
           mountPath: /var/jenkins_home/settings.xml
           subPath: settings.xml

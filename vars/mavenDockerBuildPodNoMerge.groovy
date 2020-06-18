@@ -97,8 +97,8 @@ def call(Map pipelineParams) {
                         withCredentials([usernamePassword(credentialsId: 'docker-registry-user', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                             sh 'docker login -u $USERNAME -p $PASSWORD nexus-docker.local:32489'
                             sh "docker build --build-arg JAR_FILE=${artifact_jar} -t ${pom.artifactId}:${pom.version} ."
-                            sh "docker tag ${pom.artifactId}:${pom.version} nexus-docker.local:32489/eagle/${pom.artifactId}:${pom.version}"
-                            sh "docker push nexus-docker.local:32489/eagle/${pom.artifactId}:${pom.version}"
+                            sh "docker tag ${pom.artifactId}:${pom.version} nexus-docker.local:32489/Olezhik/${pom.artifactId}:${pom.version}"
+                            sh "docker push nexus-docker.local:32489/Olezhik/${pom.artifactId}:${pom.version}"
                         }
                     }
                 }

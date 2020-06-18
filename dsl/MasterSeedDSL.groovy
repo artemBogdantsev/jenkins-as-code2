@@ -9,7 +9,7 @@ folder('DevOps') {
 
 pipelineJob("DevOps/Project Seeding") {
     parameters {
-        stringParam("repo", "dasense_platform/ansible-installer.git", "Repo to seed from")
+        stringParam("repo", "<REPO ID>/ansible-installer.git", "Repo to seed from")
         stringParam("revision", "develop", "Revision branch")
         stringParam("scriptpath", "jobDSL", "Location of seeds pipeline")
     }
@@ -23,7 +23,7 @@ pipelineJob("DevOps/Project Seeding") {
             scm {
                 git {
                     remote {
-                        url('git@172.19.90.8:$repo')
+                        url('git@172.17.0.1:$repo')
                         credentials("deploy-key-shared-library")
                     }
 
