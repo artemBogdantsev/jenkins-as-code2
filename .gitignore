@@ -4,3 +4,10 @@ resources/helm/secret-files/*
 bin/helm
 bin/kubectl
 bin/minikube
+/.idea/.gitignore
+/resources/config/config.iml
+/jenkins-as-code2.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/resources/resources.iml
+/.idea/vcs.xml
